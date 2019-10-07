@@ -1,0 +1,19 @@
+{
+  "name": "vrconcert",
+  "version": "0.1.0",
+  "description": "A tool to create virtual music concerts/videos",
+  "module": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielesteban/vrconcert"
+  },
+  "files": [
+    "core",
+    "index.js",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "author": "Daniel Esteban Nombela <dani@gatunes.com>",
+  "license": "MIT"
+}
