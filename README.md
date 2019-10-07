@@ -21,7 +21,7 @@ VRConcert
 #### Put it all together
 
 ```js
-import VRConcert from 'https://unpkg.com/vrconcert@0.1.0/index.js';
+import VRConcert from 'https://unpkg.com/vrconcert';
 
 VRConcert({
   mount: document.getElementById('mount'),
