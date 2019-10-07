@@ -1,6 +1,7 @@
-import * as Input from './core/input/index.js';
+import Audience from './core/audience.js';
 import ChromaKey from './core/chromakey.js';
 import CurveCast from './core/curvecast.js';
+import * as Input from './core/input/index.js';
 import Marker from './core/marker.js';
 import Renderer from './core/renderer.js';
 import {
@@ -106,6 +107,19 @@ export default ({
       map: texture,
     });
   }
+
+  // Load font
+  let font;
+  {
+    const loader = new FontLoader();
+    loader.load(text.font, (res) => {
+      font = res;
+      if (meshes.trackTitle) {
+        meshes.trackTitle.update();
+        meshes.trackTitle.visible = !player.paused;
+      }
+    });
+  }
  
   const audio = {
     amplitudes: new Map(),
@@ -126,7 +140,7 @@ export default ({
     if (player.paused) {
       player.play();
       texture.image = player;
-      if (meshes.trackTitle) {
+      if (font && meshes.trackTitle) {
         meshes.trackTitle.visible = true;
       }
     }
@@ -134,22 +148,25 @@ export default ({
   window.addEventListener('mousedown', onInteraction, false);
   window.addEventListener('vrdisplayactivate', onInteraction, false);
 
-  // Load font
-  let font;
-  const onFontLoad = [];
-  {
-    const loader = new FontLoader();
-    loader.load(text.font, (res) => {
-      font = res;
-      onFontLoad.forEach(callback => callback());
-      onFontLoad.length = 0;
-    });
-  }
-
   // Load scenery
-	(new GLTFLoader()).load(scenery, ({ scene: scenery }) => {
+	(new GLTFLoader()).load(scenery, (a) => {
+    const { scene: scenery } = a;
+    const audience = {
+      meshes: [],
+      planes: [],
+    };
     scenery.traverse((child) => {
       const [name, ...params] = child.name.toLowerCase().trim().split('_');
+      // Extract audience mesh & planes
+      if (child.isMesh && name === 'audience') {
+        if (params[0] === 'mesh') {
+          child.count = parseInt(params[1], 10) || 50;
+          audience.meshes.push(child);
+        } else {
+          child.updateMatrixWorld();
+          audience.planes.push(child);
+        }
+      }
       // Extract translocable planes
       if (child.isMesh && name === 'floor') {
         meshes.floor.push(child);
@@ -191,41 +208,51 @@ export default ({
           );
         }
         child.material = material;
+        child.updateMatrixWorld();
         meshes.performances.push(child);
       }
       // Extract track title
       if ((child.isMesh || child.isObject3D) && !meshes.trackTitle && name === 'tracktitle') {
-        const addTrackTitle = () => {
-          const trackTitle = new Mesh(
-            undefined,
-            new MeshStandardMaterial({ color: text.color })
-          );
-          const update = () => {
-            trackTitle.geometry.dispose();
-            trackTitle.geometry = new TextGeometry(performances.tracklist[track].title || '', {
-              font: font,
-              size: text.size,
-              height: text.height,
-            });
-            trackTitle.geometry.computeBoundingBox();
-            trackTitle.position.set(0, 0, 0).addScaledVector(
-              trackTitle.geometry.boundingBox.getSize(new Vector3()),
-              -0.5
-            );
+        const trackTitle = new Mesh(
+          undefined,
+          new MeshStandardMaterial({ color: text.color })
+        );
+        trackTitle.update = () => {
+          if (!font) {
+            return;
           }
-          trackTitle.update = update;
-          trackTitle.visible = !player.paused;
-          update();
-          child.add(trackTitle);
-          meshes.trackTitle = trackTitle;
+          trackTitle.geometry.dispose();
+          trackTitle.geometry = new TextGeometry(performances.tracklist[track].title || '', {
+            font: font,
+            size: text.size,
+            height: text.height,
+          });
+          trackTitle.geometry.computeBoundingBox();
+          trackTitle.position.set(0, 0, 0).addScaledVector(
+            trackTitle.geometry.boundingBox.getSize(new Vector3()),
+            -0.5
+          );
         };
-        if (font) {
-          addTrackTitle();
-        } else {
-          onFontLoad.push(addTrackTitle);
-        }
+        trackTitle.update();
+        trackTitle.visible = !player.paused;
+        meshes.trackTitle = trackTitle;
+        child.add(trackTitle);
       }
     });
+    if (audience.meshes.length && audience.planes.length) {
+      [...audience.meshes, ...audience.planes].forEach(mesh => (
+        mesh.parent.remove(mesh)
+      ));
+      meshes.audience = audience.meshes.map((mesh) => {
+        const instancedAudience = new Audience({
+          lookAt: meshes.performances,
+          mesh,
+          planes: audience.planes,
+        });
+        scenery.add(instancedAudience);
+        return instancedAudience;
+      });
+    }
     scene.add(scenery);
   });
 
@@ -317,18 +344,18 @@ export default ({
       let from = 2
       let ceiling = 4;
       while (band < 8 && from < freq.length - 1) {
-        const objects = meshes.bands.get(band);
         const last = audio.amplitudes.get(band) || 0;
+        let sum = 0;
+        for (let i = from; i <= ceiling; i += 1) {
+          sum += Math.max(freq[i] - 128, 0) / 127;
+        }
+        const amplitude = Math.max(Math.max(
+          Math.sqrt(sum / (ceiling - from + 1)),
+          last * 0.8
+        ), 0.001);
+        audio.amplitudes.set(band, amplitude);
+        const objects = meshes.bands.get(band);
         if (objects) {
-          let sum = 0;
-          for (let i = from; i <= ceiling; i += 1) {
-            sum += Math.max(freq[i] - 128, 0) / 127;
-          }
-          const amplitude = Math.max(Math.max(
-            Math.sqrt(sum / (ceiling - from + 1)),
-            last * 0.8
-          ), 0.001);
-          audio.amplitudes.set(band, amplitude);
           objects.forEach((object) => {
             if (object.isMesh) {
               if (object.axes.x) {
@@ -351,6 +378,11 @@ export default ({
         band += 1;
         from = ceiling;
         ceiling *= 2;
+      }
+      if (meshes.audience) {
+        meshes.audience.forEach((mesh) => (
+          mesh.update({ animation, amplitudes: audio.amplitudes })
+        ));
       }
     }
     // Make performances look at the player
