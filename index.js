@@ -61,6 +61,7 @@ export default ({
   // Setup video player
   let track = performances.track || 0;
   const player = document.createElement('video');
+  player.crossOrigin = 'anonymous';
   player.volume = volume;
   player.src = performances.tracklist[track].video;
   const nextTrack = () => {
