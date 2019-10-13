@@ -149,8 +149,7 @@ export default ({
   window.addEventListener('vrdisplayactivate', onInteraction, false);
 
   // Load scenery
-	(new GLTFLoader()).load(scenery, (a) => {
-    const { scene: scenery } = a;
+	(new GLTFLoader()).load(scenery, ({ scene: scenery }) => {
     const audience = {
       meshes: [],
       planes: [],
