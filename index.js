@@ -160,7 +160,7 @@ export default ({
       // Extract audience mesh & planes
       if (child.isMesh && name === 'audience') {
         if (params[0] === 'mesh') {
-          child.count = parseInt(params[1], 10) || 50;
+          child.weight = parseInt(params[1], 10) || 1;
           audience.meshes.push(child);
         } else {
           child.updateMatrixWorld();
@@ -239,11 +239,22 @@ export default ({
         child.add(trackTitle);
       }
     });
+    // Spawn audience
     if (audience.meshes.length && audience.planes.length) {
       [...audience.meshes, ...audience.planes].forEach(mesh => (
         mesh.parent.remove(mesh)
       ));
+      audience.planes.forEach((plane) => {
+        plane.triangles = Audience.extractTriangles(plane);
+        plane.area = plane.triangles.reduce((sum, { area }) => (
+          sum + area
+        ), 0);
+      });
+      const weightSum = audience.meshes.reduce((sum, { weight }) => (
+        sum + weight
+      ), 0);
       meshes.audience = audience.meshes.map((mesh) => {
+        mesh.weight = mesh.weight / weightSum;
         const instancedAudience = new Audience({
           lookAt: meshes.performances,
           mesh,
