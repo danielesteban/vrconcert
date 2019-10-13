@@ -12,27 +12,33 @@ class Audience extends InstancedMesh {
     const vertices = geometry.getAttribute('position');
     const triangles = [];
     for (let i = 0; i < index.count; i += 3) {
-      const vertexA = (
+      let vertexA = (
         new Vector3(
           vertices.getX(index.getX(i)),
           vertices.getY(index.getX(i)),
           vertices.getZ(index.getX(i))
         )
       ).applyMatrix4(matrixWorld);
-      const vertexB = (
+      let vertexB = (
         new Vector3(
           vertices.getX(index.getX(i + 1)),
           vertices.getY(index.getX(i + 1)),
           vertices.getZ(index.getX(i + 1))
         )
       ).applyMatrix4(matrixWorld);
-      const vertexC = (
+      let vertexC = (
         new Vector3(
           vertices.getX(index.getX(i + 2)),
           vertices.getY(index.getX(i + 2)),
           vertices.getZ(index.getX(i + 2))
         )
       ).applyMatrix4(matrixWorld);
+      if (triangles.length % 2 === 1) {
+        const v = vertexA;
+        vertexA = vertexC;
+        vertexC = vertexB;
+        vertexB = v;
+      }
       const edgeAB = (new Vector3()).subVectors(vertexB, vertexA);
       const edgeAC = (new Vector3()).subVectors(vertexC, vertexA);
       const edgeBC = (new Vector3()).subVectors(vertexB, vertexC);
@@ -57,7 +63,6 @@ class Audience extends InstancedMesh {
       edgeAC,
       vertexA,
     } = triangles[triangle];
-    const radius = Audience.density * 1.5;
     for (let i = 0; i < 10; i += 1) {
       let r = Math.random();
       let s = Math.random();
@@ -72,7 +77,7 @@ class Audience extends InstancedMesh {
         .add(vertexA);
       let collides = false;
       for (let p = 0; p < points.length; p += 1) {
-        if (points[p].distanceTo(target) < radius) {
+        if (points[p].distanceTo(target) < Audience.density) {
           collides = true;
           break;
         }
@@ -146,6 +151,6 @@ class Audience extends InstancedMesh {
   }
 }
 
-Audience.density = 0.5;
+Audience.density = 0.75;
 
 export default Audience;
