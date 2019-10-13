@@ -249,6 +249,7 @@ export default ({
         plane.area = plane.triangles.reduce((sum, { area }) => (
           sum + area
         ), 0);
+        plane.points = [];
       });
       const weightSum = audience.meshes.reduce((sum, { weight }) => (
         sum + weight

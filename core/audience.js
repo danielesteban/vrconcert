@@ -44,34 +44,45 @@ class Audience extends InstancedMesh {
         area: Math.sqrt(s * ((s - lenAB) * (s - lenAC) * (s - lenBC))),
         edgeAB,
         edgeAC,
-        lenAB: lenAB * 2,
-        lenAC: lenAC * 2,
         vertexA,
       });
     }
     return triangles;
   }
 
-  static randomPointInMesh({ triangles }, target) {
+  static randomPointInMesh({ triangles, points }, target) {
     const triangle = Math.floor(Math.random() * triangles.length);
     const {
       edgeAB,
       edgeAC,
-      lenAB,
-      lenAC,
       vertexA,
     } = triangles[triangle];
-    let r = Math.floor(Math.random() * (lenAB + 1)) / lenAB;
-    let s = Math.floor(Math.random() * (lenAC + 1)) / lenAC;
-    if (r + s >= 1) {
-      r = 1 - r;
-      s = 1 - s;
+    const radius = Audience.density * 1.5;
+    for (let i = 0; i < 10; i += 1) {
+      let r = Math.random();
+      let s = Math.random();
+      if (r + s >= 1) {
+        r = 1 - r;
+        s = 1 - s;
+      }
+      target
+        .copy(edgeAB)
+        .multiplyScalar(r)
+        .addScaledVector(edgeAC, s)
+        .add(vertexA);
+      let collides = false;
+      for (let p = 0; p < points.length; p += 1) {
+        if (points[p].distanceTo(target) < radius) {
+          collides = true;
+          break;
+        }
+      }
+      if (!collides) {
+        break;
+      }
     }
-    return target
-      .copy(edgeAB)
-      .multiplyScalar(r)
-      .addScaledVector(edgeAC, s)
-      .add(vertexA);
+    points.push(target);
+    return target;
   }
 
   constructor({
@@ -88,12 +99,11 @@ class Audience extends InstancedMesh {
       center.multiplyScalar(1 / lookAt.length);
       lookAt = center;
     }
-    const density = Audience.density * mesh.weight;
     const geometry = mesh.geometry.clone();
     const material = mesh.material.clone();
     let total = 0;
     const counts = planes.map(({ area }) => {
-      const count = Math.floor(area * (density + Math.random() * 0.2 - 0.1));
+      const count = Math.floor(area * mesh.weight * (Audience.density + Math.random() * 0.2 - 0.1));
       total += count;
       return count;
     });
