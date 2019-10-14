@@ -398,7 +398,11 @@ export default ({
       }
       if (meshes.audience) {
         meshes.audience.forEach((mesh) => (
-          mesh.update({ animation, amplitudes: audio.amplitudes, player: head })
+          mesh.update({
+            animation,
+            amplitudes: audio.amplitudes,
+            player: room.position,
+          })
         ));
       }
     }
