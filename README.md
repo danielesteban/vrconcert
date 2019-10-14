@@ -1,7 +1,7 @@
 VRConcert
 ==
 
-> A tool to create VR music concerts/videos
+> A tool to create VR performances/concerts/videos
 
 #### Pack your videos and audio
 
