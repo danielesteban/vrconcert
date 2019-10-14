@@ -10,7 +10,7 @@ VRConcert
  * Run [pack.sh track](https://github.com/danielesteban/vrconcert/blob/master/example/performances/pack.sh)
  * Everything will be packed into: [track_packed.webm](https://github.com/danielesteban/vrconcert/blob/master/example/performances/track_packed.webm)
 
-#### Create a scenery
+#### Create scenery
 
  * See example scenery: [stage.blend](https://github.com/danielesteban/vrconcert/blob/master/example/scenery/stage.blend)
  * Name your performance video planes: 'Performance_1', 'Performance_2', 'Performance_[OFFSET]', etc...
