@@ -1,6 +1,6 @@
 {
   "name": "vrconcert",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "A tool to create virtual music concerts/videos",
   "module": "index.js",
   "repository": {
@@ -15,5 +15,11 @@
     "README.md"
   ],
   "author": "Daniel Esteban Nombela <dani@gatunes.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "start": "http-server -c-1 -d false -i false -o http://localhost:8080/example/index.html"
+  },
+  "devDependencies": {
+    "http-server": "^0.11.1"
+  }
 }

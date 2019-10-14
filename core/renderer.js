@@ -22,7 +22,7 @@ class Renderer {
 
     // Setup camera & room
     this.camera = new PerspectiveCamera(75, 1, 0.1, 100);
-    this.camera.position.y = 1.5;
+    this.camera.position.y = 1.6;
     this.camera.rotation.order = 'YXZ';
     this.scene = new Scene();
     this.room = new Room();
