@@ -23,6 +23,7 @@ class Marker extends Object3D {
     }));
     outer.merge(inner);
     outer.rotateX(Math.PI * -0.5);
+    outer.translate(0, 0.025, 0);
     const geometry = (new BufferGeometry()).fromGeometry(outer);
     delete geometry.attributes.normal;
     delete geometry.attributes.uv;

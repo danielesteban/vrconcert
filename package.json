@@ -1,6 +1,6 @@
 {
   "name": "vrconcert",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A tool to create virtual music concerts/videos",
   "module": "index.js",
   "repository": {
