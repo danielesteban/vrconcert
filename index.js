@@ -348,6 +348,12 @@ export default ({
         }
       });
     });
+    // Make performances look at the player
+    head.setFromMatrixPosition(camera.matrixWorld);
+    meshes.performances.forEach((mesh) => {
+      mesh.lookAt(head);
+      mesh.updateMatrixWorld();
+    });
     // Scale band meshes
     if (audio.analyser) {
       const freq = audio.analyser.getFrequencyData();
@@ -392,15 +398,9 @@ export default ({
       }
       if (meshes.audience) {
         meshes.audience.forEach((mesh) => (
-          mesh.update({ animation, amplitudes: audio.amplitudes })
+          mesh.update({ animation, amplitudes: audio.amplitudes, player: head })
         ));
       }
     }
-    // Make performances look at the player
-    head.setFromMatrixPosition(camera.matrixWorld);
-    meshes.performances.forEach((mesh) => {
-      mesh.lookAt(head);
-      mesh.updateMatrixWorld();
-    });
   };
 };

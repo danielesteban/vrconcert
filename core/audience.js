@@ -113,6 +113,7 @@ class Audience extends InstancedMesh {
       return count;
     });
     super(geometry, material, total);
+    this.creep = Math.floor(Math.random() * total);
     this.instances = planes.reduce((instances, plane, index) => {
       const count = counts[index];
       for (let i = 0; i < count; i += 1) {
@@ -139,11 +140,14 @@ class Audience extends InstancedMesh {
     this.frustumCulled = false;
   }
 
-  update({ animation, amplitudes }) {
-    const { instances } = this;
+  update({ animation, amplitudes, player }) {
+    const { creep, instances } = this;
     instances.forEach((instance, i) => {
       const amplitude = amplitudes.get(instance.band);
       instance.scale.y = instance.baseScale.y * (0.75 + amplitude * 0.25);
+      if (i === creep) {
+        instance.lookAt(player);
+      }
       instance.updateMatrix();
       this.setMatrixAt(i, instance.matrix);
     });
