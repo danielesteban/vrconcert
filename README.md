@@ -8,11 +8,11 @@ VRConcert
  * cd [example/performances](https://github.com/danielesteban/vrconcert/tree/master/example/performances)
  * Copy your audio and videos to [track](https://github.com/danielesteban/vrconcert/tree/master/example/performances/track)
  * Run [pack.sh track](https://github.com/danielesteban/vrconcert/blob/master/example/performances/pack.sh)
- * Everything will be packed into: [track_packed.webm](https://github.com/danielesteban/vrconcert/blob/example/performances/track_packed.webm)
+ * Everything will be packed into: [track_packed.webm](https://github.com/danielesteban/vrconcert/blob/master/example/performances/track_packed.webm)
 
 #### Create a scenery
 
- * See example scenery: [stage.blend](https://github.com/danielesteban/vrconcert/blob/example/scenery/stage.blend)
+ * See example scenery: [stage.blend](https://github.com/danielesteban/vrconcert/blob/master/example/scenery/stage.blend)
  * Name your performance video planes: 'Performance_1', 'Performance_2', 'Performance_3', etc...
  * Name the meshes you want to scale with the analyser bands: 'Band_1', 'Band_2_Y', 'Band_3_XZ', 'Band_3_XYZ' etc...
  * Name your VR translocable planes: 'Floor_1', 'Floor_2', 'Floor_3', etc...
