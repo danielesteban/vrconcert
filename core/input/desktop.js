@@ -36,6 +36,7 @@ class DesktopInput {
     // Bind input events
     document.addEventListener('pointerlockchange', this.onLockChange.bind(this), false);
     mount.addEventListener('mousedown', this.requestLock.bind(this), false);
+    window.addEventListener('touchstart', this.onTouchStart.bind(this), false);
     window.addEventListener('mousedown', this.onMouseDown.bind(this), false);
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
     window.addEventListener('mouseup', this.onMouseUp.bind(this), false);
@@ -174,6 +175,14 @@ class DesktopInput {
         break;
       default:
         break;
+    }
+  }
+
+  onTouchStart() {
+    const { hint } = this;
+    if (hint) {
+      hint.parentNode.removeChild(hint);
+      delete this.hint;
     }
   }
 
