@@ -71,10 +71,9 @@ class Audience extends InstancedMesh {
         s = 1 - s;
       }
       target
-        .copy(edgeAB)
-        .multiplyScalar(r)
-        .addScaledVector(edgeAC, s)
-        .add(vertexA);
+        .copy(vertexA)
+        .addScaledVector(edgeAB, r)
+        .addScaledVector(edgeAC, s);
       let collides = false;
       for (let p = 0; p < points.length; p += 1) {
         if (points[p].distanceTo(target) < Audience.density) {
