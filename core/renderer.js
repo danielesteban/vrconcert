@@ -65,6 +65,7 @@ class Renderer {
         display.requestPresent([{ source: domElement }]);
       };
       mount.addEventListener('mousedown', requestPresent, false);
+      mount.addEventListener('touchstart', requestPresent, false);
       window.addEventListener('vrdisplayactivate', requestPresent, false);
 
       if (debug.support) {

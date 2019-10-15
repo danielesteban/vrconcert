@@ -146,6 +146,7 @@ export default ({
     }
   };
   window.addEventListener('mousedown', onInteraction, false);
+  window.addEventListener('touchstart', onInteraction, false);
   window.addEventListener('vrdisplayactivate', onInteraction, false);
 
   // Load scenery
