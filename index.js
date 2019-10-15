@@ -7,7 +7,6 @@ import Renderer from './core/renderer.js';
 import {
   Audio,
   AudioAnalyser,
-  AudioContext,
   AudioListener,
   CubeTextureLoader,
   FontLoader,
@@ -19,7 +18,6 @@ import {
   MeshBasicMaterial,
   MeshStandardMaterial,
   RGBFormat,
-  RepeatWrapping,
   TextGeometry,
   Vector3,
   VideoTexture,
@@ -67,7 +65,7 @@ export default ({
   player.src = performances.tracklist[track].video;
   const nextTrack = () => {
     track = (track + 1) % performances.tracklist.length;
-    const { title, video } = performances.tracklist[track];
+    const { video } = performances.tracklist[track];
     player.src = video;
     player.play();
     if (meshes.trackTitle) {
@@ -120,7 +118,7 @@ export default ({
       }
     });
   }
- 
+
   const audio = {
     amplitudes: new Map(),
     analyser: false,
@@ -150,7 +148,7 @@ export default ({
   window.addEventListener('vrdisplayactivate', onInteraction, false);
 
   // Load scenery
-	(new GLTFLoader()).load(scenery, ({ scene: scenery }) => {
+  (new GLTFLoader()).load(scenery, ({ scene: scenery }) => {
     const audience = {
       meshes: [],
       planes: [],
@@ -223,7 +221,7 @@ export default ({
           }
           trackTitle.geometry.dispose();
           trackTitle.geometry = new TextGeometry(performances.tracklist[track].title || '', {
-            font: font,
+            font,
             size: text.size,
             height: text.height,
           });
@@ -241,7 +239,7 @@ export default ({
     });
     // Spawn audience
     if (audience.meshes.length && audience.planes.length) {
-      [...audience.meshes, ...audience.planes].forEach(mesh => (
+      [...audience.meshes, ...audience.planes].forEach((mesh) => (
         mesh.parent.remove(mesh)
       ));
       audience.planes.forEach((plane) => {
@@ -255,7 +253,7 @@ export default ({
         sum + weight
       ), 0);
       meshes.audience = audience.meshes.map((mesh) => {
-        mesh.weight = mesh.weight / weightSum;
+        mesh.weight /= weightSum;
         const instancedAudience = new Audience({
           lookAt: meshes.performances,
           mesh,
@@ -288,7 +286,7 @@ export default ({
     standingMatrix: vr.getStandingMatrix(),
   });
   input.controllers.forEach(
-    controller => room.add(controller)
+    (controller) => room.add(controller)
   );
 
   // Setup translocation marker
@@ -304,8 +302,6 @@ export default ({
     input.update({ animation, camera, room });
     input.controllers.forEach(({
       buttons,
-      pointer,
-      pulse,
       raycaster,
       visible,
     }, hand) => {
@@ -359,7 +355,7 @@ export default ({
     if (audio.analyser) {
       const freq = audio.analyser.getFrequencyData();
       let band = 0;
-      let from = 2
+      let from = 2;
       let ceiling = 4;
       while (band < 8 && from < freq.length - 1) {
         const last = audio.amplitudes.get(band) || 0;

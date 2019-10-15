@@ -1,7 +1,6 @@
 import { Vector3 } from './three.js';
 
 const maxSteps = 5;
-const WorldUp = new Vector3(0, 1, 0);
 
 const aux = new Vector3();
 const steps = [...Array(maxSteps + 2)].map(() => new Vector3());

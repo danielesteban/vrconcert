@@ -17,9 +17,13 @@
   "author": "Daniel Esteban Nombela <dani@gatunes.com>",
   "license": "MIT",
   "scripts": {
+    "lint": "eslint --cache --ext .js core index.js",
     "start": "http-server -c-1 -d false -i false -o http://localhost:8080/example/index.html"
   },
   "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "http-server": "^0.11.1"
   }
 }

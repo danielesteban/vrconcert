@@ -81,7 +81,7 @@ class VRInput {
   update({ animation }) {
     const { auxMatrix, controllers, standingMatrix } = this;
     // Update controllers
-    const gamepads = [...navigator.getGamepads()].filter(gamepad => (
+    const gamepads = [...navigator.getGamepads()].filter((gamepad) => (
       gamepad
       && (
         gamepad.id === 'Daydream Controller'

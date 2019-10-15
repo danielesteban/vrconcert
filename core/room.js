@@ -30,7 +30,7 @@ class Room extends Object3D {
     }
     position.addScaledVector(direction, step);
   }
-  
+
   reset() {
     const { position, rotation } = this;
     delete this.destination;

@@ -27,7 +27,7 @@ export default ({ key, texture }) => (
       'uniform float threshold;',
       'uniform sampler2D video;',
       'void main() {',
-      '  vec3 fragColor = texture2D(video, fragUV).rgb;', 
+      '  vec3 fragColor = texture2D(video, fragUV).rgb;',
       '  float fragAlpha = (length(fragColor - key) - 0.5) * 7.0;',
       '  color = vec4(fragColor, fragAlpha);',
       '}',

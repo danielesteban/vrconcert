@@ -139,7 +139,7 @@ class Audience extends InstancedMesh {
     this.frustumCulled = false;
   }
 
-  update({ animation, amplitudes, player }) {
+  update({ amplitudes, player }) {
     const { creep, instances } = this;
     instances.forEach((instance, i) => {
       const amplitude = amplitudes.get(instance.band);
