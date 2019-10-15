@@ -1,5 +1,7 @@
 import {
   Clock,
+  CubeTextureLoader,
+  HemisphereLight,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
@@ -8,8 +10,10 @@ import Room from './room.js';
 
 class Renderer {
   constructor({
+    ambient,
     debug,
     mount,
+    skybox,
   }) {
     // Initialize state
     this.clock = new Clock();
@@ -28,6 +32,18 @@ class Renderer {
     this.room = new Room();
     this.room.add(this.camera);
     this.scene.add(this.room);
+
+    // Setup ambient light
+    if (ambient) {
+      const light = new HemisphereLight(ambient.sky, ambient.ground);
+      light.position.copy(ambient.position);
+      this.scene.add(light);
+    }
+
+    // Load skybox
+    if (skybox) {
+      this.scene.background = (new CubeTextureLoader()).load(skybox);
+    }
 
     // Setup renderer
     {

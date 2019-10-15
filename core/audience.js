@@ -139,10 +139,10 @@ class Audience extends InstancedMesh {
     this.frustumCulled = false;
   }
 
-  update({ amplitudes, player }) {
+  update({ bands, player }) {
     const { creep, instances } = this;
     instances.forEach((instance, i) => {
-      const amplitude = amplitudes.get(instance.band);
+      const amplitude = bands.get(instance.band);
       instance.scale.y = instance.baseScale.y * (0.75 + amplitude * 0.25);
       if (i === creep) {
         instance.lookAt(player);
