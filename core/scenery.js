@@ -33,12 +33,14 @@ class Scenery extends Object3D {
 
   onAnimationTick({ camera, room }) {
     const { aux, meshes, player } = this;
+
     // Make performances look at the player
     aux.setFromMatrixPosition(camera.matrixWorld);
     meshes.performances.forEach((mesh) => {
       mesh.lookAt(aux);
       mesh.updateMatrixWorld();
     });
+
     // Scale band meshes
     if (player.updateBands()) {
       if (meshes.audience) {
@@ -92,6 +94,7 @@ class Scenery extends Object3D {
     };
     scene.traverse((child) => {
       const [name, ...params] = child.name.toLowerCase().trim().split('_');
+
       // Extract audience mesh & planes
       if (child.isMesh && name === 'audience') {
         if (params[0] === 'mesh') {
@@ -102,10 +105,12 @@ class Scenery extends Object3D {
           audience.planes.push(child);
         }
       }
+
       // Extract translocable planes
       if (child.isMesh && name === 'floor') {
         meshes.floor.push(child);
       }
+
       // Extract meshes that scale with the audio bands
       if ((child.isMesh || child.isLight) && name === 'band') {
         if (child.isMesh) {
@@ -124,6 +129,7 @@ class Scenery extends Object3D {
         }
         meshes.bands.get(index).push(child);
       }
+
       // Extract performance planes
       if (child.isMesh && name === 'performance') {
         const index = parseInt(params[0], 10) - 1;
@@ -146,6 +152,7 @@ class Scenery extends Object3D {
         child.updateMatrixWorld();
         meshes.performances.push(child);
       }
+
       // Extract track title
       if ((child.isMesh || child.isObject3D) && !meshes.trackTitle && name === 'tracktitle') {
         const trackTitle = new Mesh(
@@ -157,6 +164,7 @@ class Scenery extends Object3D {
         child.add(trackTitle);
       }
     });
+
     // Spawn audience
     if (audience.meshes.length && audience.planes.length) {
       [...audience.meshes, ...audience.planes].forEach((mesh) => (
@@ -179,10 +187,11 @@ class Scenery extends Object3D {
           mesh,
           planes: audience.planes,
         });
-        scene.add(instancedAudience);
+        this.add(instancedAudience);
         return instancedAudience;
       });
     }
+
     [...scene.children].forEach((child) => this.add(child));
   }
 
