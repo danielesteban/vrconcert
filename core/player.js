@@ -70,7 +70,6 @@ class Player {
       source: false,
     };
     window.addEventListener('mousedown', this.onInteraction.bind(this), false);
-    window.addEventListener('touchstart', this.onInteraction.bind(this), false);
     window.addEventListener('vrdisplayactivate', this.onInteraction.bind(this), false);
   }
 
