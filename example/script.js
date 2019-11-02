@@ -3,7 +3,7 @@ import VRConcert from '../index.js';
 VRConcert({
   mount: document.getElementById('mount'),
   performances: {
-    chromakey: '#1df708',
+    chromakey: '#00d800',
     members: 2,
     tracklist: [
       {

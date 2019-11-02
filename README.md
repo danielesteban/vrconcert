@@ -12,7 +12,7 @@ VRConcert
 
 #### Create scenery
 
- * See example scenery: [stage.blend](https://github.com/danielesteban/vrconcert/blob/master/example/scenery/stage.blend)
+ * See example scenery: [stage_duo.blend](https://github.com/danielesteban/vrconcert/blob/master/example/scenery/stage_duo.blend)
  * Name your performance video planes: 'Performance_1', 'Performance_2', 'Performance_[OFFSET]', etc...
  * Name the meshes you want to scale with the analyser bands: 'Band_1', 'Band_2_Y', 'Band_3_XYZ', 'Band_[BAND]_[AXIS]' etc...
  * Name your VR translocable planes: 'Floor_1', 'Floor_2', 'Floor_3', etc...
@@ -28,7 +28,7 @@ import VRConcert from 'https://unpkg.com/vrconcert';
 VRConcert({
   mount: document.getElementById('mount'),
   performances: {
-    chromakey: '#00d400',
+    chromakey: '#00d800',
     members: 2,
     tracklist: [
       {
