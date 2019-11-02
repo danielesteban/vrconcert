@@ -9,6 +9,7 @@ import { Fonts } from './core/three.js';
 export default ({
   ambient = false,
   mount,
+  onAnimationTick,
   performances,
   scenery: sceneryModel,
   skybox = false,
@@ -119,5 +120,14 @@ export default ({
     });
     // Animate scenery
     scenery.onAnimationTick({ camera, room });
+    // Custom animation
+    if (onAnimationTick) {
+      onAnimationTick({
+        animation,
+        camera,
+        room,
+        scenery,
+      });
+    }
   };
 };

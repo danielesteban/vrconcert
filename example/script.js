@@ -17,7 +17,7 @@ VRConcert({
     ground: 0x111111,
     position: { x: 0, y: 1, z: 0 },
   },
-  scenery: 'scenery/stage.glb',
+  scenery: 'scenery/stage_duo.glb',
   skybox: [
     'skybox/right.jpg',
     'skybox/left.jpg',

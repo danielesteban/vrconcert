@@ -133,24 +133,28 @@ class Scenery extends Object3D {
       // Extract performance planes
       if (child.isMesh && name === 'performance') {
         const index = parseInt(params[0], 10) - 1;
-        const uv = child.geometry.getAttribute('uv');
-        const bias = 0.001;
-        const stride = 1 / player.performances.members;
-        const offset = stride * index + bias;
-        const width = stride - bias * 2;
-        const height = 1 - bias * 2;
-        for (let i = 0; i < uv.count; i += 1) {
-          const x = uv.getX(i);
-          const y = 1 - uv.getY(i);
-          uv.setXY(
-            i,
-            offset + x * width,
-            bias + y * height
-          );
+        if (index < player.performances.members) {
+          const uv = child.geometry.getAttribute('uv');
+          const bias = 0.001;
+          const stride = 1 / player.performances.members;
+          const offset = stride * index + bias;
+          const width = stride - bias * 2;
+          const height = 1 - bias * 2;
+          for (let i = 0; i < uv.count; i += 1) {
+            const x = uv.getX(i);
+            const y = 1 - uv.getY(i);
+            uv.setXY(
+              i,
+              offset + x * width,
+              bias + y * height
+            );
+          }
+          child.material = player.material;
+          child.updateMatrixWorld();
+          meshes.performances.push(child);
+        } else {
+          child.visible = false;
         }
-        child.material = player.material;
-        child.updateMatrixWorld();
-        meshes.performances.push(child);
       }
 
       // Extract track title

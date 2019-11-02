@@ -9,10 +9,10 @@ if [ -z "$1" ] ; then
   exit 1;
 fi
 if [ -z "$2" ] ; then
-  target_width=256
+  target_width=640
 fi
 if [ -z "$3" ] ; then
-  target_height=384
+  target_height=360
 fi
 
 shopt -s nullglob
