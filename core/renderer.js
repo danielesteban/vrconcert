@@ -54,6 +54,7 @@ class Renderer {
       });
     }
     this.renderer.gammaOutput = true;
+    this.renderer.physicallyCorrectLights = true;
     // this.renderer.setPixelRatio(window.devicePixelRatio || 1);
     this.renderer.setAnimationLoop(this.onAnimationTick.bind(this));
     this.mount.appendChild(this.renderer.domElement);

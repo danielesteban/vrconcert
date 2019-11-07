@@ -13,8 +13,8 @@ VRConcert({
     ],
   },
   ambient: {
-    sky: 0x444444,
-    ground: 0x111111,
+    sky: 0xffffff,
+    ground: 0x444444,
     position: { x: 0, y: 1, z: 0 },
   },
   scenery: 'scenery/stage_duo.glb',
